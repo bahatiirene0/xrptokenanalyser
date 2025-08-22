@@ -231,8 +231,24 @@ const TokenDoctorPage: React.FC = () => {
   return (
     <section id="tokendoctor" className="py-20 px-4">
       <div className="max-w-5xl mx-auto text-center mb-10">
+        {/* Ticker banner */}
+        <div className="mb-4">
+          <div className="bg-green-500/10 border border-green-500/30 text-green-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
+            <span className="font-semibold">TICKER:</span>
+            <span>Welcome to <span className="text-white font-bold">$XTA</span> XRP Token Analyser</span>
+            <span className="text-gray-500">—</span>
+            <a
+              href="https://firstledger.net"
+              target="_blank"
+              rel="noreferrer"
+              className="text-green-300 font-bold underline underline-offset-4 hover:text-green-200"
+            >
+              Buy now
+            </a>
+          </div>
+        </div>
         <h2 className="text-4xl font-bold text-white mb-4">Token<span className="text-green-400">Doctor</span></h2>
-        <p className="text-gray-300 text-lg mb-6">Paste a token link or identifier to run analysis.</p>
+        <p className="text-gray-300 text-lg mb-6">Paste a token link or identifier to run analysis. This is a research project; outputs are not financial advice.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <input
             value={query}

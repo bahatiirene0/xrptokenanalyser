@@ -8,6 +8,14 @@ import { LRUCache } from 'lru-cache';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 dotenv.config({ path: new URL('../.env', import.meta.url).pathname });
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+let PDFDocument;
+try {
+  PDFDocument = require('pdfkit');
+} catch {
+  PDFDocument = null;
+}
 
 const PORT = process.env.PORT || 4000;
 const LOG_LEVEL = (process.env.LOG_LEVEL || 'info').toLowerCase();
@@ -232,10 +240,72 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', xrpl: xrplReady, rpcUrl: XRPL_RPC_URL });
 });
 
+// Simple ping for diagnostics
+app.get('/api/ping', (_req, res) => {
+  res.json({ ok: true });
+});
+
 // Diagnostics: return recent logs (for local debugging)
 app.get('/api/logs', (req, res) => {
   const limit = Math.min(parseInt((req.query.limit || '200').toString(), 10) || 200, LOG_BUFFER_MAX);
   res.json(logBuffer.slice(-limit));
+});
+
+// Generate whitepaper PDF on the fly
+app.get('/api/whitepaper.pdf', (_req, res) => {
+  try {
+    if (!PDFDocument) {
+      return res.status(503).json({ error: 'pdf_unavailable', message: 'PDF generator not installed' });
+    }
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="XTA_Whitepaper.pdf"');
+    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    doc.pipe(res);
+
+    const section = (title, body) => {
+      doc.moveDown(0.8);
+      doc.font('Helvetica-Bold').fontSize(14).text(title);
+      doc.moveDown(0.3);
+      doc.font('Helvetica').fontSize(11).text(body, { align: 'left' });
+    };
+
+    doc.font('Helvetica-Bold').fontSize(18).text('XTA (XRP Token Analyser) — Research Whitepaper', { align: 'center' });
+    doc.moveDown(0.5);
+    doc.font('Helvetica-Oblique').fontSize(10).fillColor('#666666').text('Version 0.1 • This document reflects an ongoing research project. Not investment advice.', { align: 'center' });
+    doc.fillColor('#000000');
+
+    section('Executive Summary',
+      'XTA is a research project exploring AI-assisted due diligence for XRPL-issued assets. Our goal is to prototype transparent, reproducible, and safety-first analysis workflows that help users frame risks and uncertainty. XTA is not a trading product; outputs do not constitute financial advice.');
+
+    section('Motivation',
+      'Fragmented on-chain and off-chain information makes it hard to form an informed view about tokens. Many tools overpromise certainty. Our research emphasizes clear uncertainty, reproducibility, and conservative interpretation of noisy signals.');
+
+    section('System Overview',
+      'Data Sources: XRPL core (account_info, account_lines, book_offers, ledger_entry, amm_info), aggregators (xrpl.to, XRPSCAN). Pipeline: ingestion, normalization with provenance, short‑TTL caching, and an AI summary layer. Outputs: human‑readable bullet points with risk context and explicit uncertainty notes.');
+
+    section('Research Principles',
+      'Reproducibility (ground every statement in data), Uncertainty Awareness (label missing/low-signal contexts), Minimal Assumptions (conservative defaults), and Ethics (public data only).');
+
+    section('Methodology',
+      'Issuer risk via flags (master key, global freeze, fees); liquidity via orderbook spread/density and AMM reserves/fees; holder concentration (top percentiles); sparkline trend sketching without overclaiming; AI prompt constrained to provided JSON with calibrated, cautious language.');
+
+    section('Tokenomics (illustrative, research‑phase)',
+      'Total Supply: 1,000,000. Team: 5%. LP burned: 100%. Taxes: 0%. Marketing & Partnerships: 5%. Utilities: AI analysis access, developer API, governance for research roadmap.');
+
+    section('Roadmap',
+      'Q1–Q2 2024: core ingestion/UI/AI summaries (completed). Q3 2024: predictive prototypes, beta, community testing (in progress). Q4 2024: token generation, marketing/shilling, public launch, integrations. 2025: multi‑chain, advanced models, mobile, institutional features.');
+
+    section('Limitations & Disclaimers',
+      'Data gaps and thin liquidity reduce confidence. AI summaries can misinterpret low-signal contexts; always validate with raw data. Markets move; snapshots lag. XTA is research, provided as‑is, not investment advice.');
+
+    section('Future Work',
+      'Per‑bullet confidence scoring, richer provenance (source/timestamps), and community‑curated metadata standards for XRPL tokens.');
+
+    doc.end();
+  } catch (e) {
+    log('error', 'whitepaper.pdf.error', { error: String(e) });
+    res.status(500).json({ error: 'pdf_error', message: String(e) });
+  }
 });
 
 app.get('/api/token/:identifier', async (req, res) => {

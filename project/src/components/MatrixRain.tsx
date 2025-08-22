@@ -4,9 +4,11 @@ const MatrixRain: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Respect user's reduced motion preference
+    // Respect reduced motion unless URL contains ?effects=on
+    const url = new URL(window.location.href);
+    const effectsOn = url.searchParams.get('effects') === 'on';
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion && !effectsOn) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -38,15 +40,15 @@ const MatrixRain: React.FC = () => {
     }
 
     const isSmallScreen = window.innerWidth < 768;
-    const activeColumnProbability = isSmallScreen ? 0.45 : 0.6;
+    const activeColumnProbability = isSmallScreen ? 0.5 : 0.65;
 
     const draw = () => {
       // Dark overlay with stronger clear to reduce persistence
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Softer green text
-      ctx.fillStyle = 'rgba(0, 255, 68, 0.55)';
+      ctx.fillStyle = 'rgba(0, 255, 68, 0.7)';
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -63,8 +65,8 @@ const MatrixRain: React.FC = () => {
       }
     };
 
-    // Slightly slower to feel calmer
-    const interval = setInterval(draw, isSmallScreen ? 95 : 80);
+    // Balanced speed for visibility
+    const interval = setInterval(draw, isSmallScreen ? 85 : 70);
 
     return () => {
       clearInterval(interval);
@@ -75,7 +77,7 @@ const MatrixRain: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none opacity-[0.12] md:opacity-[0.1]"
+      className="fixed inset-0 z-0 pointer-events-none opacity-[0.18] md:opacity-[0.14]"
       style={{ background: 'transparent' }}
     />
   );

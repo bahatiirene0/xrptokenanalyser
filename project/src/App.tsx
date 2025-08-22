@@ -2,12 +2,11 @@ import MatrixRain from './components/MatrixRain';
 import Navigation from './components/Navigation';
 import HeroSection from './components/HeroSection';
 import FooterSection from './components/FooterSection';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TokenDoctorPage from './pages/TokenDoctorPage';
 
 function RouteAwareMatrix() {
-  const location = useLocation();
-  return location.pathname === '/' ? <MatrixRain /> : null;
+  return <MatrixRain />;
 }
 
 function App() {
@@ -236,9 +235,9 @@ function App() {
                           real-time XRPL transaction analysis, social sentiment tracking, and whale detection algorithms to deliver 
                           comprehensive token evaluations with predictive insights and social intelligence.
                         </p>
-                        <button className="bg-gradient-to-r from-green-600 to-green-500 text-black font-bold py-3 px-8 rounded-lg hover:from-green-500 hover:to-green-400 transition-all duration-300 transform hover:scale-105">
-                          Download AI Whitepaper
-                        </button>
+                        <a href="/whitepaper.pdf" className="inline-block bg-gradient-to-r from-green-600 to-green-500 text-black font-bold py-3 px-8 rounded-lg hover:from-green-500 hover:to-green-400 transition-all duration-300 transform hover:scale-105">
+                          Download Research Whitepaper (PDF)
+                        </a>
                       </div>
                     </div>
                   </section>

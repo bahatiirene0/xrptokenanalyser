@@ -3,21 +3,22 @@ import React from 'react';
 
 const HeroSection: React.FC = () => {
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-4 pt-16">
+    <section id="about" className="min-h-screen flex items-center justify-center px-4 pt-24 md:pt-28 pb-12">
       <div className="max-w-6xl mx-auto text-center">
-        <div className="mb-8 float-in" style={{animationDelay: '40ms'}}>
+        <div className="mb-10 md:mb-12 float-in" style={{animationDelay: '40ms'}}>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight font-futuristic tracking-wide">
             AI-Powered <span className="text-green-400">XRP</span>
             <br />
             Token Analysis
           </h1>
-          <p className="text-base md:text-lg text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Advanced artificial intelligence meets blockchain analytics. Discover hidden patterns, 
+          <p className="text-base md:text-lg text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            Advanced artificial intelligence meets blockchain analytics. Discover hidden patterns,
             detect whale movements, and make informed decisions with our cutting-edge XRPL analysis platform.
+            This is a research project — experimental and continuously evolving.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
+        <div className="grid md:grid-cols-4 gap-6 md:gap-8 mb-14">
           <div className="bg-black/40 backdrop-blur-sm border border-green-500/20 rounded-lg p-6 hover:border-green-500/40 transition-all duration-300 float-in" style={{animationDelay: '70ms'}}>
             <h3 className="text-white font-semibold mb-1">TokenDoctor</h3>
             <p className="text-gray-400 text-sm">AI-powered due diligence at a glance</p>
