@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-black text-white font-mono;
+  }
+}
+
+@layer components {
+  .matrix-text {
+    @apply text-green-400;
+    text-shadow: 0 0 10px #00FF44;
+  }
+  
+  .matrix-glow {
+    box-shadow: 0 0 20px rgba(0, 255, 68, 0.3);
+  }
+  
+  .matrix-border {
+    @apply border border-green-500/20;
+  }
+}
