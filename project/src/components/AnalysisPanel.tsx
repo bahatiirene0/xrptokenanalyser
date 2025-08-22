@@ -1,9 +1,8 @@
-import React from 'react';
-import { TrendingUp, TrendingDown, Activity, AlertTriangle, Brain, Zap } from 'lucide-react';
+import { TrendingUp, Activity, AlertTriangle, Brain, Zap } from 'lucide-react';
 
 const AnalysisPanel: React.FC = () => {
   return (
-    <section className="py-20 px-4 bg-black/20">
+    <section className="py-10 px-4 bg-black/20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-white mb-6">

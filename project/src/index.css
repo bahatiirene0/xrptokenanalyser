@@ -8,21 +8,87 @@
   }
   
   body {
-    @apply bg-black text-white font-mono;
+    /* Use Space Grotesk as base, Orbitron for headings */
+    @apply bg-black text-white font-grotesk;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3 {
+    @apply font-futuristic tracking-wide;
   }
 }
 
 @layer components {
   .matrix-text {
-    @apply text-green-400;
-    text-shadow: 0 0 10px #00FF44;
+    @apply text-green-300;
+    text-shadow: 0 0 6px rgba(0, 255, 68, 0.35);
   }
   
   .matrix-glow {
-    box-shadow: 0 0 20px rgba(0, 255, 68, 0.3);
+    box-shadow: 0 0 12px rgba(0, 255, 68, 0.22);
   }
   
   .matrix-border {
-    @apply border border-green-500/20;
+    @apply border border-green-500/15;
+  }
+
+  /* Futuristic typing animation */
+  .typing {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid rgba(34,197,94,0.8);
+    animation: typing 1.2s steps(30, end), blink 0.8s step-end infinite;
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  @keyframes blink {
+    from, to { border-color: transparent }
+    50% { border-color: rgba(34,197,94,0.8) }
+  }
+
+  /* Blinking caret for word-by-word typing */
+  .caret {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: rgba(34,197,94,0.85);
+    margin-left: 4px;
+    vertical-align: bottom;
+    animation: blink 0.8s step-end infinite;
+  }
+
+  /* Subtle card float-in */
+  .float-in {
+    transform: translateY(8px);
+    opacity: 0;
+    animation: floatIn 420ms ease-out forwards;
+  }
+  @keyframes floatIn {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Progress shimmer */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    animation: shimmer 1.2s infinite;
+  }
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
   }
 }

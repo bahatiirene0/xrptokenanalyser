@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        futuristic: ['"Orbitron"', 'system-ui', 'sans-serif'],
+        grotesk: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+      },
       colors: {
         matrix: {
           green: '#00FF44',
@@ -15,6 +19,7 @@ export default {
       animation: {
         'matrix-rain': 'matrix-rain 20s linear infinite',
         'pulse-green': 'pulse-green 2s ease-in-out infinite alternate',
+        'fade-in-up': 'fade-in-up 700ms ease-out both',
       },
       keyframes: {
         'matrix-rain': {
@@ -24,6 +29,10 @@ export default {
         'pulse-green': {
           '0%': { boxShadow: '0 0 5px #00FF44' },
           '100%': { boxShadow: '0 0 20px #00FF44, 0 0 30px #00FF44' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: 0, transform: 'translateY(20px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
         }
       }
     },
